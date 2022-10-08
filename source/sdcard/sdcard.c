@@ -990,3 +990,8 @@ int sd_write_sector(SD_dev * sd, uint8_t * data, uint32_t sector_address, uint32
  return SD_CID_READ_OK;
  
  }
+ 
+ int sd_read_busy_check(SD_dev * sd)
+ {
+	return sd->busy;
+ }

@@ -201,4 +201,6 @@ typedef struct {
  
  int sd_read_register(SD_dev * sd, uint8_t * data, uint8_t cmd_index, uint32_t len);
  
+ int sd_read_busy_check(SD_dev * sd);
+ 
 #endif
