@@ -1,6 +1,8 @@
 #include "source/ff.h"
 #include <sys/hardwaredefs.h>
 #include "sdcard/sdcard.h"
+#include "task.h"
+#include <sys/log.h>
 #include <source/ff.h>
 #include <sys/systime.h>
 

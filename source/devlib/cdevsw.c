@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <FreeRTOS.h>
 #include <semphr.h>
-#include <driver/serial.h>
+#include <task.h>
+#include <driver/pic32/serial.h>
 #include <queue.h>
 
 #include <sys/hardwaredefs.h>

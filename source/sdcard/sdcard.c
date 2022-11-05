@@ -6,7 +6,9 @@
 #include <utils/crc.h>
 #include <proc/p32mz2048efh064.h>
 #include "sys/hardwaredefs.h"
-#include <driver/spi.h>
+#include <driver/pic32/spi.h>
+#include <task.h>
+#include <sys/log.h>
 
 SD_dev sd[SD_CARD_DEVICE_NUM];
  

@@ -7,7 +7,7 @@
 #ifndef SERIAL_H
 #define	SERIAL_H
 
-#include <devlib/buffer.h>
+//#include <devlib/buffer.h>
 
 void ser_init(unsigned int* config, unsigned int dev_pointer);
 

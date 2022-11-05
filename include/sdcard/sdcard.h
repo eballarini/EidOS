@@ -193,6 +193,8 @@ typedef struct {
  
  int sd_read_sector(SD_dev * sd, uint8_t * data, uint32_t sector_address, uint32_t sector_size, uint32_t sector_num);
  
+ int sd_write_sector(SD_dev * sd, uint8_t * data, uint32_t sector_address, uint32_t sector_size, uint32_t sector_num);
+ 
  int sd_get_data(SD_dev * sd, uint8_t * data, uint32_t len );
  
  int sd_read_cid(SD_dev * sd, uint8_t * data);
@@ -202,5 +204,17 @@ typedef struct {
  int sd_read_register(SD_dev * sd, uint8_t * data, uint8_t cmd_index, uint32_t len);
  
  int sd_read_busy_check(SD_dev * sd);
+ 
+ int sd_read_block(uint32_t address, SD_dev * sd, uint8_t* data);
+ 
+ int sd_write_block(uint32_t address, SD_dev * sd, uint8_t* data);
+ 
+ void configure_sd_cards();
+ 
+ int sd_print_csd(SD_dev * sd);
+  
+ int sd_print_cid(SD_dev * sd);
+ 
+ uint8_t sd_get_card_status(SD_dev * sd);
  
 #endif

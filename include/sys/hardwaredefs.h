@@ -22,4 +22,6 @@
 
 #endif
 
+void prvSetupHardware();
+
 #endif
