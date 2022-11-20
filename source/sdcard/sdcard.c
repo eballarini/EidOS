@@ -329,6 +329,11 @@ int sd_read_sector(SD_dev * sd, uint8_t * data, uint32_t sector_address, uint32_
     uint32_t block_count, sector_count, sector_block_ratio;
     int result;
     
+    if (sd->state!=OPERATIONAL)
+    {
+        return SD_SECTOR_READ_CARD_NOT_READY;
+    }
+    
     sector_block_ratio=sector_size/sd->blocklen;
     
     for(sector_count=0;sector_count<sector_num; sector_count++)
