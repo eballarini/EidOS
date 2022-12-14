@@ -7,8 +7,8 @@
 #include "sys/log.h"
 #include "sdcard/sdcard.h"
 #include "source/ff.h"
-#include "driver/eth_macp32_phy8710a.h"
-
+#include "driver/pic32/eth_macp32_phy8710a.h"
+#include <task.h>
 
 /*max input size from cli*/
 #define MSH_MAX_ARRAY_SIZE 100

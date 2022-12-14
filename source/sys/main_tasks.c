@@ -6,8 +6,7 @@
 #include "task.h"
 #include "sys/fs.h"
 #include "sys/systime.h"
-
-
+#include <sys/hardwaredefs.h>
 
 
 int init_main_tasks()

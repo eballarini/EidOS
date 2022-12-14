@@ -1,6 +1,8 @@
 #include "source/ff.h"
 #include <sys/hardwaredefs.h>
 #include "sdcard/sdcard.h"
+#include "task.h"
+#include <sys/log.h>
 #include <source/ff.h>
 #include <sys/systime.h>
 
@@ -14,7 +16,7 @@ void vTaskDriveHandler(void* pvParameters)
     configure_sd_cards();
     
     xLastWakeTime = xTaskGetTickCount();
-    vTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS( 30000 ) );
+    vTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS( 2000 ) );
     
     res=f_mount(&root_fs,"",1);
     
@@ -24,7 +26,7 @@ void vTaskDriveHandler(void* pvParameters)
       }
     else
        {
-       write_log ("\r\nfs: fyle system mounted\0"); 
+       write_log ("\r\nfs: file system mounted\0"); 
        }
     
     vTaskDelete(NULL);

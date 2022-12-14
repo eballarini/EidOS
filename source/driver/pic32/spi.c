@@ -1,5 +1,8 @@
 #include <p32xxxx.h>  
+
 #include <FreeRTOS.h>
+
+#include <task.h>
 
 int spi_init(uint8_t spi_num)
 {

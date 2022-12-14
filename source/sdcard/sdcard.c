@@ -6,7 +6,9 @@
 #include <utils/crc.h>
 #include <proc/p32mz2048efh064.h>
 #include "sys/hardwaredefs.h"
-#include <driver/spi.h>
+#include <driver/pic32/spi.h>
+#include <task.h>
+#include <sys/log.h>
 
 SD_dev sd[SD_CARD_DEVICE_NUM];
  
@@ -326,6 +328,11 @@ int sd_read_sector(SD_dev * sd, uint8_t * data, uint32_t sector_address, uint32_
 {
     uint32_t block_count, sector_count, sector_block_ratio;
     int result;
+    
+    if (sd->state!=OPERATIONAL)
+    {
+        return SD_SECTOR_READ_CARD_NOT_READY;
+    }
     
     sector_block_ratio=sector_size/sd->blocklen;
     
