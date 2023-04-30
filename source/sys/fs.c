@@ -5,6 +5,7 @@
 #include <sys/log.h>
 #include <source/ff.h>
 #include <sys/systime.h>
+#include <stdio.h>
 
 extern FATFS root_fs;
 

@@ -9,6 +9,7 @@
 #include "source/ff.h"
 #include "driver/pic32/eth_macp32_phy8710a.h"
 #include <task.h>
+#include "mjswrap.h"
 
 /*max input size from cli*/
 #define MSH_MAX_ARRAY_SIZE 100
@@ -31,6 +32,7 @@ char ethstatus_command[]="ethstatus";
 char ethinit_command[]="ethinit";
 char ethwrite_command[]="ethwrite";
 char ethstats_command[]="ethstats";
+char mjs_command[]="mjs";
 
 MSH_CMD_LIST msh_commands;
 
@@ -68,6 +70,7 @@ void MshInitCommands(void)
     MshCommandRegister(ethinit_command, init_ethphy);
     MshCommandRegister(ethwrite_command, write_ethphy);
     MshCommandRegister(ethstats_command, print_ethstats);
+    MshCommandRegister(mjs_command, mjsexec);
 }
 
 void vTaskmShell(unsigned int device_num)

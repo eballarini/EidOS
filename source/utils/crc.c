@@ -16,7 +16,7 @@ void init_CRC7_table()
     uint8_t index, crc, j;
     uint32_t counter;
     
-    printf("\niniting table\n");
+    //printf("\niniting table\n");
     
     for (counter=0;counter<256; counter++)
     {
@@ -26,7 +26,7 @@ void init_CRC7_table()
       }
     table[counter]=crc;
     }
-    printf("\ntable compiled\n");
+    //printf("\ntable compiled\n");
     
 }
 
@@ -51,7 +51,7 @@ void init_CRC16_table(uint16_t* crc16_table, uint16_t crc16_poly)
     uint16_t crc, j;
     uint32_t counter;
     
-    printf("\niniting table\n");
+    //printf("\niniting table\n");
 
     
     for (counter=0;counter<256; counter++)
@@ -65,9 +65,9 @@ void init_CRC16_table(uint16_t* crc16_table, uint16_t crc16_poly)
       }
      
      crc16_table[counter]=crc;
-     printf("value: %x, CRC: %x\n", counter, crc16_table[counter]);
+     //printf("value: %x, CRC: %x\n", counter, crc16_table[counter]);
     }
-    printf("\ntable compiled\n");
+    //printf("\ntable compiled\n");
     
 }
 
