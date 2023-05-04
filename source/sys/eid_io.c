@@ -4,6 +4,39 @@
 #include <devlib/cdev.h>
 #include <string.h>
 
+
+void *__wrap_malloc (size_t size)
+{
+    return pvPortMalloc(size);
+}
+
+void *__wrap_calloc (size_t num, size_t size)
+{
+    uint32_t i,j;
+    uint8_t *pointer;
+    
+    pointer=pvPortMalloc(num*size);
+    
+    if(pointer!=NULL)
+    {
+    for(i=0;i<num;i++)
+        {
+        for(j=0;j<size;j++)
+            {
+            pointer[i*size+j]=0;
+            }
+        }
+    }
+    
+    return (void*) pointer;
+}
+
+//void *__wrap_realloc (void *, size_t);
+void __wrap_free (void * pointer)
+{
+    vPortFree(pointer);
+}
+
 extern DEV cdev[];
 
 int __wrap_vprintf( const char* format, va_list vlist)
