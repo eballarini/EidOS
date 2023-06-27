@@ -44,7 +44,7 @@ void mjswrap(void * pvParameters)
     mjs_exec(mjs, "let f = ffi('void foo(int)'); f(1234)", NULL);
     
     //delete process
-    vTaskDelete( NULL );
+    //vTaskDelete( NULL );
     
 }
 
@@ -67,7 +67,8 @@ int mjsexec(int argc, char **argv, DEV* console)
     
     //start process
     
-    task_create_result=xTaskCreate(mjswrap, "mjswrap", 100, (void*) env, 1, handle);
+    mjswrap(env);
+    //task_create_result=xTaskCreate(mjswrap, "mjswrap", 100, env, 1, handle);
     
     //return code on startup
     if(task_create_result==pdPASS)
