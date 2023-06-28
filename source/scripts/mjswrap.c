@@ -13,7 +13,7 @@ typedef struct
 DEV* mjsdev;
 
 void foo(int x) {
-  //printf("Hello %d!\n", x);
+  printf("Hello %d!\n", x);
     
   //writearray(mjsdev, "\r\n mjs script executed! \r\n\0" , 100, '\0');
 }
