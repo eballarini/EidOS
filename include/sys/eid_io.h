@@ -5,7 +5,7 @@
 
 int __wrap_vprintf( const char* format, va_list vlist);
 
-int __wrap_printf( const char* format, ...);
+int __wrap_printf( const char *__restrict, ...);
 
 int __wrap_vfprintf(FILE* stream, const char* format, va_list vlist);
 

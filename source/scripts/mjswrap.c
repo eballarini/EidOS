@@ -3,7 +3,8 @@
 #include "devlib/cdev.h"
 #include "task.h"
 #include <devlib/cdev.h>
-#include "string.h"
+#include <string.h>
+#include <scripts/mjsresolv.h>
 
 typedef struct
 {
@@ -11,12 +12,6 @@ typedef struct
 }shell_env;
 
 DEV* mjsdev;
-
-void foo(int x) {
-  printf("Hello %d!\n", x);
-    
-  //writearray(mjsdev, "\r\n mjs script executed! \r\n\0" , 100, '\0');
-}
 
 void *mjs_resolver(void *handle, const char *name) {
   

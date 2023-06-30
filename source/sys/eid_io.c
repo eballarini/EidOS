@@ -4,6 +4,7 @@
 #include <devlib/cdev.h>
 #include <string.h>
 
+
 typedef struct A_BLOCK_LINK
 {
 	struct A_BLOCK_LINK *pxNextFreeBlock;	/*<< The next free block in the list. */
@@ -188,13 +189,13 @@ int __wrap_vprintf( const char* format, va_list vlist)
     
 }
 
-int __wrap_printf( const char* format, ...)
+int __wrap_printf( const char * format, ...)
 {
    va_list vlist; 
    int ret;
 	
    va_start(vlist, format);
-   ret=vprintf(format, vlist);
+   ret=__wrap_vprintf(format, vlist);
    va_end(vlist);
    
    return ret;
@@ -216,7 +217,7 @@ int __wrap_fprintf(FILE* stream, const char* format, ...)
    int ret;
 	
    va_start(vlist, format);
-   ret=vfprintf(stream, format, vlist);
+   ret=__wrap_vfprintf(stream, format, vlist);
    va_end(vlist);
    
    return ret;
