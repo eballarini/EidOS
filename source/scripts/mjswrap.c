@@ -1,4 +1,6 @@
-#include "mjs.h"
+# define MJS_TAG_UNDEFINED 0
+
+#include <mjs.h>
 #include "mjswrap.h"
 #include "devlib/cdev.h"
 #include "task.h"
@@ -20,9 +22,11 @@ void *mjs_resolver(void *handle, const char *name) {
   return NULL;
 }
 
-void mjswrap(void * pvParameters)
+void mjswrap(void * pvParameters, const char *file_path)
 {   
     shell_env * env;
+    mjs_val_t res = MJS_UNDEFINED;
+    mjs_err_t ret;
     
     //setting environment
     env=(shell_env *) pvParameters;
@@ -37,6 +41,14 @@ void mjswrap(void * pvParameters)
     
     //execute script: warn if failed
     mjs_exec(mjs, "let f = ffi('void foo(int)'); f(1234)", NULL);
+    
+    mjs_destroy(mjs);
+    
+    mjs = mjs_create();
+    
+    ret = mjs_exec_file(mjs, file_path, &res);
+    
+    mjs_destroy(mjs);
     
     //delete process
     //vTaskDelete( NULL );
@@ -62,7 +74,7 @@ int mjsexec(int argc, char **argv, DEV* console)
     
     //start process
     
-    mjswrap(env);
+    mjswrap(env, argv[1]);
     //task_create_result=xTaskCreate(mjswrap, "mjswrap", 100, env, 1, handle);
     
     //return code on startup

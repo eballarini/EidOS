@@ -4,6 +4,7 @@
 #include <devlib/cdev.h>
 #include <string.h>
 
+#define STRING_MAX_SIZE 100
 
 typedef struct A_BLOCK_LINK
 {
@@ -175,15 +176,56 @@ void *__wrap_realloc( void *ptr, size_t new_size )
 }
 
 
+int __wrap_vsnprintf (char * str, size_t n, const char * format, va_list arg )
+{
+  uint32_t i=0;
+
+  for(i=0; format[i]!='\0'&&i<n&&str!=NULL; i++)
+  {
+      //to be implemented
+      str[i]=format[i];
+
+  }
+  
+  if(i==n&&str!=NULL)
+  { if (n=0)
+      str[0]='\0';
+    else
+      str[i-1]='\0';
+  }
+  
+  return i;
+}
+
+int __wrap_snprintf (char * str, size_t n, const char * format, ...)
+{
+   va_list vlist; 
+   int ret;
+   char string[200];
+	
+   va_start(vlist, format);
+   
+   ret=__wrap_vsnprintf(str, n, format, vlist);
+  
+   va_end(vlist);
+   
+   return ret;
+}
+
+int __wrap_vsprintf(char *str, const char *format, va_list arg)
+{
+    return __wrap_vsnprintf(str, STRING_MAX_SIZE, format, arg);
+}
 
 
 int __wrap_vprintf( const char* format, va_list vlist)
 {
     char string[200];
     
-    vsprintf(string, format, vlist);
+    __wrap_vsprintf(string, format, vlist);
 
-    return writearray(&cdev[0],string, 100, '\0');
+    writearray(&cdev[0],string, 100, '\0');
+    
     return strlen(string);
     /*return f_puts((const TCHAR*)string, (FIL*)stream);*/
     
@@ -193,9 +235,12 @@ int __wrap_printf( const char * format, ...)
 {
    va_list vlist; 
    int ret;
+   char string[200];
 	
    va_start(vlist, format);
+   
    ret=__wrap_vprintf(format, vlist);
+  
    va_end(vlist);
    
    return ret;
@@ -228,7 +273,11 @@ FILE* __wrap_fopen (const char* filename, const char* mode)
   FRESULT result;
   FIL* file;
   
-  result=f_open( file, (const TCHAR*)  filename, (BYTE) *mode);
+  file=pvPortMalloc(sizeof(FIL));
+  
+  //select file mode
+  
+  result=f_open( file, (const TCHAR*)  filename, FA_READ);
   
   if (result == FR_OK) {
       return (FILE*) file;
@@ -291,6 +340,8 @@ int __wrap_fclose(FILE* stream)
   FRESULT result;
   
   result=f_close( (FIL*) stream );
+  
+  vPortFree(stream);
   
   if (result == FR_OK) {
       return 0;

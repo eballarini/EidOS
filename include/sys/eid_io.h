@@ -3,7 +3,13 @@
 
 #include <stdio.h>
 
+int __wrap_vsnprintf (char * str, size_t n, const char * format, va_list arg );
+
+int __wrap_vsprintf(char *str, const char *format, va_list arg);
+
 int __wrap_vprintf( const char* format, va_list vlist);
+
+int __wrap_snprintf (char * str, size_t n, const char * format, ...);
 
 int __wrap_printf( const char *__restrict, ...);
 
