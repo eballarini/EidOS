@@ -7,6 +7,8 @@
 #include <devlib/cdev.h>
 #include <string.h>
 #include <scripts/mjsresolv.h>
+#include <sys/eid_io.h>
+#include "source/ff.h"
 
 typedef struct
 {
@@ -28,6 +30,13 @@ void mjswrap(void * pvParameters, const char *file_path)
     mjs_val_t res = MJS_UNDEFINED;
     mjs_err_t ret;
     
+    size_t obj_read;
+    
+    FIL file;
+    FRESULT fres, read_res; 
+    uint8_t * buffer;
+    UINT bytes_read;
+    
     //setting environment
     env=(shell_env *) pvParameters;
     
@@ -35,18 +44,37 @@ void mjswrap(void * pvParameters, const char *file_path)
     
     //declare mjs struct
     struct mjs *mjs = mjs_create();
-    
+
     //set embedded function resolver
     mjs_set_ffi_resolver(mjs, mjs_resolver);
     
+    fres = f_open(&file, file_path, FA_READ);
+    
+    buffer=pvPortMalloc(f_size(&file)+1);
+    
+    if(buffer==0)
+    {
+       __wrap_printf("\r\nmalloc failed\r\n");   
+    }
+    
+    if (fres == FR_OK) 
+    {
+        obj_read=__wrap_fread(buffer, f_size(&file), 1, (FILE *)&file);
+        
+        buffer[f_size(&file)]='\0';
+        
+        f_close(&file);
+    }
+    else
+      __wrap_printf("\r\nfile open failed \r\n");  
+    
     //execute script: warn if failed
-    mjs_exec(mjs, "let f = ffi('void foo(int)'); f(1234)", NULL);
+    ret=mjs_exec(mjs, buffer, NULL);
     
-    mjs_destroy(mjs);
+    if(ret!=MJS_OK)
+        __wrap_printf("script execution failed with errors");
     
-    mjs = mjs_create();
-    
-    ret = mjs_exec_file(mjs, file_path, &res);
+    vPortFree(buffer);
     
     mjs_destroy(mjs);
     
