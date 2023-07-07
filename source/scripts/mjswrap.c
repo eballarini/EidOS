@@ -26,7 +26,7 @@ void *mjs_resolver(void *handle, const char *name) {
 }
 
 //file_path not needed anymore
-void mjswrap(void * pvParameters, const char *file_path)
+void mjswrap(void * pvParameters/*, const char *file_path*/)
 {   
     mjs_env_vars * env;
     mjs_val_t res = MJS_UNDEFINED;
@@ -91,9 +91,14 @@ int mjsexec(int argc, char **argv, DEV* console)
     TaskHandle_t * handle;
     //variable environment
     mjs_env_vars * env;
+    char* file_path;
     
     //allocating environment variables
     env=pvPortMalloc(sizeof(mjs_env_vars));
+    
+    file_path=pvPortMalloc(strlen(argv[1])+1);
+    
+    strcpy(file_path,argv[1]);
     
     if(env==0)
         return MJSEXEC_FAIL;
@@ -101,11 +106,11 @@ int mjsexec(int argc, char **argv, DEV* console)
     //setting console as standard device
     
     env->stdev=console;
-    env->path=argv[1];
+    env->path=file_path;
     
     //start process
     
-    mjswrap(env, argv[1]);
+    mjswrap(env);
     //task_create_result=xTaskCreate(mjswrap, "mjswrap", 2000, env, 1, handle);
     
     //return code on startup
