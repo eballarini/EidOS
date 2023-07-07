@@ -40,4 +40,7 @@ int __wrap_fflush(FILE* stream);
 
 long __wrap_ftell(FILE* stream);
 
+//to be incremented
+#define printf(X, ...) __wrap_printf(X,__VA_ARGS__)
+
 #endif

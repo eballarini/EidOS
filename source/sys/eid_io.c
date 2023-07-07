@@ -6,180 +6,13 @@
 
 #define STRING_MAX_SIZE 100
 
-typedef struct A_BLOCK_LINK
-{
-	struct A_BLOCK_LINK *pxNextFreeBlock;	/*<< The next free block in the list. */
-	size_t xBlockSize;						/*<< The size of the free block. */
-} BlockLink_t;
-
-/* The size of the structure placed at the beginning of each allocated memory
-block must by correctly byte aligned. */
-static const size_t xHeapStructSize	= ( sizeof( BlockLink_t ) + ( ( size_t ) ( portBYTE_ALIGNMENT - 1 ) ) ) & ~( ( size_t ) portBYTE_ALIGNMENT_MASK );
-
-#ifndef heapBITS_PER_BYTE
-#define heapBITS_PER_BYTE		( ( size_t ) 8 )
-#endif
-
-static size_t xBlockAllocatedBit=( ( size_t ) 1 ) << ( ( sizeof( size_t ) * heapBITS_PER_BYTE ) - 1 );
-
 extern DEV cdev[];
-
-void *pvPortCalloc (size_t num, size_t size)
-{
-    uint32_t i,j;
-    uint8_t *pointer;
-    
-    pointer=pvPortMalloc(num*size);
-    
-    if(pointer!=NULL)
-    {
-    for(i=0;i<num;i++)
-        {
-        for(j=0;j<size;j++)
-            {
-            pointer[i*size+j]=0;
-            }
-        }
-    }
-    
-    return (void*) pointer;
-}
-
-void *pvPortRealloc( void *pv, size_t xWantedSize )
-{/*
-    BlockLink_t *pxLink;
-    void *pvReturn = NULL;
-	size_t block_size;
-    size_t move_size;
-    
-    
-	if (xWantedSize > 0)
-	{ 
-            // The memory being freed will have an BlockLink_t structure immediately before it.
-			pxLink = (BlockLink_t *)pv-xHeapStructSize;
-            block_size=pxLink->xBlockSize & xBlockAllocatedBit;
-            
-            pvReturn=pvPortMalloc(xWantedSize);
-            
-            if(pvReturn!=0)
-            {
-            if(xWantedSize>block_size)
-                move_size=block_size;
-            else
-                move_size=xWantedSize;
-            
-            if(block_size>0 && pv != NULL )
-            {
-                memcpy(pvReturn, pv, move_size);
-            }
-            
-            vPortFree(pv);
-            }
-    }
-*/
-	// Exit with memory block
-	//return pvReturn;
-    
-    
-	// Local variable	
-	size_t move_size;
-	size_t block_size;
-	BlockLink_t *pxLink;
-	void *pvReturn = NULL;
-	uint8_t *puc = ( uint8_t * ) pv;
-
-	// Se NULL, exit
-	if (xWantedSize > 0)
-	{
-		// Controllo se buffer valido
-		if (pv != NULL)
-		{
-			// The memory being freed will have an BlockLink_t structure immediately before it.
-			puc -= xHeapStructSize;
-
-			// This casting is to keep the compiler from issuing warnings.
-			pxLink = ( void * ) puc;
-
-			// Check allocate block
-			if ((pxLink->xBlockSize & xBlockAllocatedBit) != 0)
-			{
-				// The block is being returned to the heap - it is no longer allocated.
-				block_size = (pxLink->xBlockSize & ~xBlockAllocatedBit) - xHeapStructSize;
-
-				// Alloco nuovo spazio di memoria
-				pvReturn = pvPortCalloc(1, xWantedSize);
-
-				// Check creation
-				if (pvReturn != NULL)
-				{
-					// Sposta soltanto fino al limite
-					if (block_size < xWantedSize)
-					{
-						// Il nuovo posto disponibile è inferiore
-						move_size = block_size;
-					}
-					else
-					{
-						// Il nuovo posto disponibile è maggiore
-						move_size = xWantedSize;
-					}
-
-					// Copio dati nel nuovo spazio di memoria
-					memcpy(pvReturn, pv, move_size);
-
-					// Libero vecchio blocco di memoria
-					vPortFree(pv);
-				}
-			}
-			else
-			{
-				// Puntatore nullo, alloca memoria come fosse nuova
-				pvReturn = pvPortCalloc(1, xWantedSize);
-			}
-		}
-		else
-		{
-			// Puntatore nullo, alloca memoria come fosse nuova
-			pvReturn = pvPortCalloc(1, xWantedSize);
-		}
-	}
-	else
-	{
-		// Exit without memory block
-		pvReturn = NULL;
-	}
-
-	// Exit with memory block
-	return pvReturn;
-}
-
-	
-void *__wrap_malloc (size_t size)
-{
-    return pvPortMalloc(size);
-}
-
-void *__wrap_calloc (size_t num, size_t size)
-{
-    return pvPortCalloc(num,size);
-}
-
-//void *__wrap_realloc (void *, size_t);
-void __wrap_free (void * pointer)
-{
-    vPortFree(pointer);
-}
-
-void *__wrap_realloc( void *ptr, size_t new_size )
-{
-    return pvPortRealloc(ptr, new_size);
-}
-
 
 int __wrap_vsnprintf (char * str, size_t n, const char * format, va_list arg )
 {
   uint32_t i=0;
 
+  //TODO: placeholder implementation
   for(i=0; format[i]!='\0'&&i<n&&str!=NULL; i++)
   {
       //to be implemented
@@ -224,10 +57,10 @@ int __wrap_vprintf( const char* format, va_list vlist)
     
     __wrap_vsprintf(string, format, vlist);
 
+    //find a better way to write to stdout - define stdout before
     writearray(&cdev[0],string, 100, '\0');
     
     return strlen(string);
-    /*return f_puts((const TCHAR*)string, (FIL*)stream);*/
     
 }
 
@@ -275,7 +108,7 @@ FILE* __wrap_fopen (const char* filename, const char* mode)
   
   file=pvPortMalloc(sizeof(FIL));
   
-  //select file mode
+  //TODO file mode conversion
   
   result=f_open( file, (const TCHAR*)  filename, FA_READ);
   
@@ -311,7 +144,7 @@ size_t __wrap_fread(void * buffer, size_t size, size_t count, FILE * stream)
     return count;
 }
 
-//to be checked causing exception
+
 size_t __wrap_fwrite(const void * buffer, size_t size, size_t count, FILE * stream)
 {
     uint32_t obj_num;
@@ -357,7 +190,7 @@ int __wrap_fseek(FILE* stream, long offset, int origin)
   FRESULT result;
   long calc_offset;
   
-  //to be done calculation of origin from SEEK_END SEEK_SET, SEEK CUR
+  
   if (origin==SEEK_SET)
       calc_offset=origin;
   else if (origin==SEEK_CUR)
