@@ -14,6 +14,7 @@ typedef struct
 {
   DEV* stdev;
   const char * path;
+  TaskHandle_t * TaskHandle;
 }mjs_env_vars;
 
 DEV* mjsdev;
@@ -80,15 +81,22 @@ void mjswrap(void * pvParameters/*, const char *file_path*/)
     
     mjs_destroy(mjs);
     
+    /*while(1)
+    {
+        vTaskDelay(1000 / portTICK_PERIOD_MS); 
+    }*/
     //delete process
-    //vTaskDelete( NULL );
+    vTaskDelete( *env->TaskHandle );
+    
+    vPortFree(env->TaskHandle);
+    
+    vPortFree(env);
     
 }
 
 int mjsexec(int argc, char **argv, DEV* console)
 {
     BaseType_t task_create_result;
-    TaskHandle_t * handle;
     //variable environment
     mjs_env_vars * env;
     char* file_path;
@@ -100,6 +108,7 @@ int mjsexec(int argc, char **argv, DEV* console)
     
     strcpy(file_path,argv[1]);
     
+    
     if(env==0)
         return MJSEXEC_FAIL;
     
@@ -107,11 +116,12 @@ int mjsexec(int argc, char **argv, DEV* console)
     
     env->stdev=console;
     env->path=file_path;
+    env->TaskHandle=pvPortMalloc(sizeof(TaskHandle_t));
     
     //start process
     
-    mjswrap(env);
-    //task_create_result=xTaskCreate(mjswrap, "mjswrap", 2000, env, 1, handle);
+    //mjswrap(env);
+    task_create_result=xTaskCreate(mjswrap, "mjswrap", 2000, env, 1, env->TaskHandle);
     
     //return code on startup
     if(task_create_result==pdPASS)
