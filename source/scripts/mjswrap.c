@@ -53,38 +53,34 @@ void mjswrap(void * pvParameters/*, const char *file_path*/)
     
     fres = f_open(&file, env->path, FA_READ);
     
-    buffer=pvPortMalloc(f_size(&file)+1);
-    
-    if(buffer==0)
-    {
-       __wrap_printf("\r\nmalloc failed\r\n");   
-    }
-    
     if (fres == FR_OK) 
     {
+        buffer=pvPortMalloc(f_size(&file)+1);
+        
+        if(buffer==0)
+        {
+            __wrap_printf("\r\nmalloc failed\r\n");   
+        }
+        
         obj_read=__wrap_fread(buffer, f_size(&file), 1, (FILE *)&file);
         
         buffer[f_size(&file)]='\0';
         
         f_close(&file);
+        
+        //execute script: warn if failed
+        ret=mjs_exec(mjs, buffer, NULL);
+    
+        if(ret!=MJS_OK)
+            __wrap_printf("script execution failed with errors");
+        
+        vPortFree(buffer);
     }
     else
       __wrap_printf("\r\nfile open failed \r\n");  
     
-    //execute script: warn if failed
-    ret=mjs_exec(mjs, buffer, NULL);
-    
-    if(ret!=MJS_OK)
-        __wrap_printf("script execution failed with errors");
-    
-    vPortFree(buffer);
-    
     mjs_destroy(mjs);
     
-    /*while(1)
-    {
-        vTaskDelay(1000 / portTICK_PERIOD_MS); 
-    }*/
     //delete process
     vTaskDelete( *env->TaskHandle );
     
