@@ -2,6 +2,9 @@
 #include <string.h>
 #include <FreeRTOS.h>
 
+// the functions available here are ment to be included in heap_4.c
+
+//this definiton is the same inside heap_4.c
 typedef struct A_BLOCK_LINK
 {
 	struct A_BLOCK_LINK *pxNextFreeBlock;	/*<< The next free block in the list. */
@@ -39,8 +42,8 @@ void *pvPortCalloc (size_t num, size_t size)
     return (void*) pointer;
 }
 
+//function from forum community
 
-//can be added to heap_4.c
 void *pvPortRealloc( void *pv, size_t xWantedSize )
 {	
 	size_t move_size;
@@ -49,16 +52,16 @@ void *pvPortRealloc( void *pv, size_t xWantedSize )
 	void *pvReturn = NULL;
 	uint8_t *puc = ( uint8_t * ) pv;
 
-	// Se NULL, exit
+	//Exit on NULL
 	if (xWantedSize > 0)
 	{
-		// Controllo se buffer valido
+		// Check if buffer is valid
 		if (pv != NULL)
 		{
-			// The memory being freed will have an BlockLink_t structure immediately before it.
+			// Memory being freed will have an BlockLink_t structure immediately before it.
 			puc -= xHeapStructSize;
 
-			// This casting is to keep the compiler from issuing warnings.
+			// Casting is to keep the compiler from issuing warnings.
 			pxLink = ( void * ) puc;
 
 			// Check allocate block
@@ -67,40 +70,40 @@ void *pvPortRealloc( void *pv, size_t xWantedSize )
 				// The block is being returned to the heap - it is no longer allocated.
 				block_size = (pxLink->xBlockSize & ~xBlockAllocatedBit) - xHeapStructSize;
 
-				// Alloco nuovo spazio di memoria
+				// New memory space allocation
 				pvReturn = pvPortCalloc(1, xWantedSize);
 
 				// Check creation
 				if (pvReturn != NULL)
 				{
-					// Sposta soltanto fino al limite
+					// Move only to the limit
 					if (block_size < xWantedSize)
 					{
-						// Il nuovo posto disponibile è inferiore
+						// New space available is less than before
 						move_size = block_size;
 					}
 					else
 					{
-						// Il nuovo posto disponibile è maggiore
+						// New space available is more than before
 						move_size = xWantedSize;
 					}
 
-					// Copio dati nel nuovo spazio di memoria
+					// Data copy into new memory space
 					memcpy(pvReturn, pv, move_size);
 
-					// Libero vecchio blocco di memoria
+					// Freeing unused memory space
 					vPortFree(pv);
 				}
 			}
 			else
 			{
-				// Puntatore nullo, alloca memoria come fosse nuova
+				// Null pointer, allocate new memory
 				pvReturn = pvPortCalloc(1, xWantedSize);
 			}
 		}
 		else
 		{
-			// Puntatore nullo, alloca memoria come fosse nuova
+			// Null pointer, allocate new memory
 			pvReturn = pvPortCalloc(1, xWantedSize);
 		}
 	}

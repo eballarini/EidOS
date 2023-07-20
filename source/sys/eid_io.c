@@ -105,12 +105,32 @@ FILE* __wrap_fopen (const char* filename, const char* mode)
 {
   FRESULT result;
   FIL* file;
+  BYTE fil_mode;
   
   file=pvPortMalloc(sizeof(FIL));
   
-  //TODO file mode conversion
+  //file mode conversion
   
-  result=f_open( file, (const TCHAR*)  filename, FA_READ);
+  if (strcmp (mode,"r") == 0)	
+      fil_mode=FA_READ;
+  else if(strcmp (mode,"r+") == 0)	
+      fil_mode=FA_READ | FA_WRITE;
+  else if(strcmp (mode,"w") == 0)	
+      fil_mode=FA_CREATE_ALWAYS | FA_WRITE;
+  else if(strcmp (mode,"w+") == 0)	
+      fil_mode=FA_CREATE_ALWAYS | FA_WRITE | FA_READ;
+  else if(strcmp (mode,"a") == 0)	
+      fil_mode=FA_OPEN_APPEND | FA_WRITE;
+  else if(strcmp (mode,"a+") == 0)	
+      fil_mode=FA_OPEN_APPEND | FA_WRITE | FA_READ;
+  else if(strcmp (mode,"wx") == 0)	
+      fil_mode=FA_CREATE_NEW | FA_WRITE;
+  else if(strcmp (mode,"w+x") == 0)	
+      fil_mode=FA_CREATE_NEW | FA_WRITE | FA_READ;
+  else
+      return NULL;
+  
+  result=f_open( file, (const TCHAR*)  filename, fil_mode);
   
   if (result == FR_OK) {
       return (FILE*) file;
