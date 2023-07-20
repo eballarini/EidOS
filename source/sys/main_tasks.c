@@ -23,7 +23,7 @@ int init_main_tasks()
     task_create_result=xTaskCreate(vTaskIOhandler, "iohandler", 1000, NULL, 1, NULL);
     
     /*start serial console to handle device*/
-    task_create_result=xTaskCreate(vTaskCon, "console", 500, NULL, 1, NULL);
+    task_create_result=xTaskCreate(vTaskCon, "console", 2000, NULL, 1, NULL);
     
     /*start drive handlers*/
     task_create_result=xTaskCreate(vTaskDriveHandler, "drivehandler", 500, NULL, 1, NULL);
