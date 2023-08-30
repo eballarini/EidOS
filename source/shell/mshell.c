@@ -1,15 +1,15 @@
 
 #include <devlib/cdev.h>
 #include <mshell/mshell.h>
-#include "string.h"
+#include <string.h>
 #include <sys/hardwaredefs.h>
-#include "system_config.h"
-#include "sys/log.h"
-#include "sdcard/sdcard.h"
-#include "source/ff.h"
-#include "driver/pic32/eth_macp32_phy8710a.h"
+#include <system_config.h>
+#include <sys/log.h>
+#include <sdcard/sdcard.h>
+#include <source/ff.h>
+#include <driver/pic32/eth_macp32_phy8710a.h>
 #include <task.h>
-#include "mjswrap.h"
+#include <mjswrap.h>
 
 /*max input size from cli*/
 #define MSH_MAX_ARRAY_SIZE 100

@@ -2,10 +2,10 @@
 #include <stdlib.h>                     
 #include <devlib/cdev.h>
 #include <mshell/mshell.h>
-#include "sys/sysutils.h"
-#include "task.h"
-#include "sys/fs.h"
-#include "sys/systime.h"
+#include <sys/sysutils.h>
+#include <task.h>
+#include <sys/fs.h>
+#include <sys/systime.h>
 #include <sys/hardwaredefs.h>
 
 

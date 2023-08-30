@@ -1,7 +1,7 @@
 #ifndef MJSWRAP
 #define MJSWRAP
 
-#include "devlib/cdev.h"
+#include <devlib/cdev.h>
 
 #define MJSEXEC_SUCCESS 0
 #define MJSEXEC_FAIL 1

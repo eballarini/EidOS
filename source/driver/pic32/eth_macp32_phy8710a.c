@@ -1,8 +1,8 @@
 
 #include <p32xxxx.h>
 #include <proc/p32mz2048efh064.h>
-#include "sys/log.h"
-#include "driver/pic32/eth_macp32_phy8710a.h"
+#include <sys/log.h>
+#include <driver/pic32/eth_macp32_phy8710a.h>
 
 #define PHY_ADDRESS 0x0000
 

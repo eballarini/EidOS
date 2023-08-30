@@ -1,8 +1,3 @@
-/* 
- * File:   serial.h
- * Author: Emanuele Ballarini
- *
- */
 
 #ifndef SERIAL_H
 #define	SERIAL_H

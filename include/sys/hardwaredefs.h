@@ -1,7 +1,7 @@
 #ifndef HARDWAREDEFS
 #define HARDWAREDEFS
 #include <devlib/cdev.h>
-#include "sdcard/sdcard.h"
+#include <sdcard/sdcard.h>
 
 #ifdef EMZ64
 

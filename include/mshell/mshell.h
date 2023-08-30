@@ -5,7 +5,6 @@
 #define CMD_MAX_NUM 200
 #define CMD_DESCR_LEN 100
 
-/*#include "semphr.h"*/
 
 typedef struct msh_cmd{
     
