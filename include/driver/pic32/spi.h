@@ -1,8 +1,3 @@
-/* 
- * File:   serial.h
- * Author: Emanuele Ballarini
- *
- */
 
 #ifndef SPI_H
 #define	SPI_H

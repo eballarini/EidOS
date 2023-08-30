@@ -1,5 +1,4 @@
 #include <stdlib.h>
-//#include <devlib/buffer.h>
 #include <devlib/cdev.h>
 #include <sys/hardwaredefs.h>
 #include <p32xxxx.h>                // Include PIC32 specifics header file

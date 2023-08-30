@@ -1,11 +1,11 @@
-#include "sdcard/sdcard.h"
+#include <sdcard/sdcard.h>
 #include <stdint.h>
 #include <FreeRTOS.h>
 #include <p32xxxx.h>                // Include PIC32 specifics header file
 #include <sys/attribs.h>
 #include <utils/crc.h>
 #include <proc/p32mz2048efh064.h>
-#include "sys/hardwaredefs.h"
+#include <sys/hardwaredefs.h>
 #include <driver/pic32/spi.h>
 #include <task.h>
 #include <sys/log.h>
