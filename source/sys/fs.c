@@ -19,6 +19,8 @@ void vTaskDriveHandler(void* pvParameters)
     xLastWakeTime = xTaskGetTickCount();
     vTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS( 2000 ) );
     
+    if(SD_CHECK_PRESENCE==1)
+    {
     res=f_mount(&root_fs,"",1);
     
     if(res!=FR_OK)
@@ -29,6 +31,9 @@ void vTaskDriveHandler(void* pvParameters)
        {
        write_log ("\r\nfs: file system mounted\0"); 
        }
+    }
+    else
+       write_log ("\r\nfs: sd card absent\0"); 
     
     vTaskDelete(NULL);
 }

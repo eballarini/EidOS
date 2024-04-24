@@ -11,6 +11,7 @@
 #define USER_LED2 LATBbits.LATB10
 #define OLED_NRESET LATFbits.LATF1
 #define SD_SELECT LATGbits.LATG9
+#define SD_CHECK_PRESENCE PORTFbits.RF0
 
 //sd card specific confs
 #define VHS_SUPPLIED VHS_3V

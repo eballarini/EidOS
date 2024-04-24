@@ -22,6 +22,28 @@ DEV* mjsdev;
 void *mjs_resolver(void *handle, const char *name) {
   
   if (strcmp(name, "foo") == 0) return foo;
+  else if (strcmp(name, "filetext") == 0) return filetext;
+  else if (strcmp(name, "mjs_res_prints") == 0) return mjs_res_prints;
+  else if (strcmp(name, "mjs_flip_gpio") == 0) return mjs_flip_gpio;
+  else if (strcmp(name, "mjs_wait") == 0) return mjs_wait;
+  else if (strcmp(name, "filetext") == 0) return filetext;
+  else if (strcmp(name, "mjs_res_prints") == 0) return mjs_res_prints;
+  else if (strcmp(name, "mjs_pwm_set_dc") == 0) return mjs_pwm_set_dc;
+  else if (strcmp(name, "mjs_pwm_set_period") == 0) return mjs_pwm_set_period;  
+  else if (strcmp(name, "mjs_pwm_on") == 0) return mjs_pwm_on;  
+  else if (strcmp(name, "mjs_pwm_off") == 0) return mjs_pwm_off;  
+  else if (strcmp(name, "mjs_gpio_set") == 0) return mjs_gpio_set;  
+  else if (strcmp(name, "mjs_gpio_unset") == 0) return mjs_gpio_unset;  
+  else if (strcmp(name, "mjs_gpio_flip") == 0) return mjs_gpio_flip; 
+  else if (strcmp(name, "mjs_delay") == 0) return mjs_delay; 
+  else if (strcmp(name, "mjs_temp_less_than") == 0) return mjs_temp_less_than; 
+  else if (strcmp(name, "mjs_temp_greater_than") == 0) return mjs_temp_greater_than; 
+  else if (strcmp(name, "mjs_humidity_less_than") == 0) return mjs_humidity_less_than; 
+  else if (strcmp(name, "mjs_humidity_greater_than") == 0) return mjs_humidity_greater_than; 
+  else if (strcmp(name, "mjs_light_less_than") == 0) return mjs_light_less_than; 
+  else if (strcmp(name, "mjs_light_greater_than") == 0) return mjs_light_greater_than; 
+  else if (strcmp(name, "mjs_pressure_less_than") == 0) return mjs_pressure_less_than; 
+  else if (strcmp(name, "mjs_pressure_greater_than") == 0) return mjs_pressure_greater_than; 
   
   return NULL;
 }

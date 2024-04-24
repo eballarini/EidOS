@@ -1,0 +1,30 @@
+{
+  "loop":[
+    {
+      "when": "always",
+      "action": "pwm_set_dc",
+      "arguments": [1,20],
+      "delay": 0
+    },
+    {
+      "when": "always",
+      "action": "pwm_set_period",
+      "arguments": [1,1],
+      "delay": 1000
+    },
+    {      
+      "when": "temp_less_than",
+      "eval_value": 1,
+      "action": "pwm_on",
+      "arguments": [1],
+      "delay": 1000      
+    },
+    {      
+      "when": "temp_less_than",
+      "eval_value": 1,
+      "action": "print",
+      "arguments": ["Hello world!","pippo"],
+      "delay": 1000     
+    }
+  ]
+}
