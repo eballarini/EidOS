@@ -1,3 +1,21 @@
+/*
+EidOS - a small RTOS for PIC microntrollers
+Copyright (C) 2022  Emanuele Ballarini
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 # define MJS_TAG_UNDEFINED 0
 
 #include <mjs.h>
@@ -22,6 +40,28 @@ DEV* mjsdev;
 void *mjs_resolver(void *handle, const char *name) {
   
   if (strcmp(name, "foo") == 0) return foo;
+  else if (strcmp(name, "filetext") == 0) return filetext;
+  else if (strcmp(name, "mjs_res_prints") == 0) return mjs_res_prints;
+  else if (strcmp(name, "mjs_flip_gpio") == 0) return mjs_flip_gpio;
+  else if (strcmp(name, "mjs_wait") == 0) return mjs_wait;
+  else if (strcmp(name, "filetext") == 0) return filetext;
+  else if (strcmp(name, "mjs_res_prints") == 0) return mjs_res_prints;
+  else if (strcmp(name, "mjs_pwm_set_dc") == 0) return mjs_pwm_set_dc;
+  else if (strcmp(name, "mjs_pwm_set_period") == 0) return mjs_pwm_set_period;  
+  else if (strcmp(name, "mjs_pwm_on") == 0) return mjs_pwm_on;  
+  else if (strcmp(name, "mjs_pwm_off") == 0) return mjs_pwm_off;  
+  else if (strcmp(name, "mjs_gpio_set") == 0) return mjs_gpio_set;  
+  else if (strcmp(name, "mjs_gpio_unset") == 0) return mjs_gpio_unset;  
+  else if (strcmp(name, "mjs_gpio_flip") == 0) return mjs_gpio_flip; 
+  else if (strcmp(name, "mjs_delay") == 0) return mjs_delay; 
+  else if (strcmp(name, "mjs_temp_less_than") == 0) return mjs_temp_less_than; 
+  else if (strcmp(name, "mjs_temp_greater_than") == 0) return mjs_temp_greater_than; 
+  else if (strcmp(name, "mjs_humidity_less_than") == 0) return mjs_humidity_less_than; 
+  else if (strcmp(name, "mjs_humidity_greater_than") == 0) return mjs_humidity_greater_than; 
+  else if (strcmp(name, "mjs_light_less_than") == 0) return mjs_light_less_than; 
+  else if (strcmp(name, "mjs_light_greater_than") == 0) return mjs_light_greater_than; 
+  else if (strcmp(name, "mjs_pressure_less_than") == 0) return mjs_pressure_less_than; 
+  else if (strcmp(name, "mjs_pressure_greater_than") == 0) return mjs_pressure_greater_than; 
   
   return NULL;
 }

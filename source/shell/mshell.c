@@ -1,3 +1,21 @@
+/*
+EidOS - a small RTOS for PIC microntrollers
+Copyright (C) 2022  Emanuele Ballarini
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 
 #include <devlib/cdev.h>
 #include <mshell/mshell.h>
@@ -12,7 +30,7 @@
 #include <mjswrap.h>
 
 /*max input size from cli*/
-#define MSH_MAX_ARRAY_SIZE 100
+#define MSH_MAX_ARRAY_SIZE 10000
 
 /*max argument size and number*/
 #define MSH_MAX_CMD_SIZE 100
@@ -33,6 +51,12 @@ char ethinit_command[]="ethinit";
 char ethwrite_command[]="ethwrite";
 char ethstats_command[]="ethstats";
 char mjs_command[]="mjs";
+char code_license_command[]="code_license";
+char code_warranty_command[]="code_warranty";
+
+char license_banner[]="\n\rEidOS Copyright (C) 2022  Emanuele Ballarini\r\nThis program comes with ABSOLUTELY NO WARRANTY; for details type `code_warranty'.\r\nThis is free software, and you are welcome to redistribute it\r\nunder certain conditions; type `code_license' for details.\n\r\n\r";
+
+char warranty_banner[]="\n\rEidOS - a small RTOS for PIC microntrollers\n\rCopyright (C) 2022  Emanuele Ballarini\n\r\n\rThis program is free software: you can redistribute it and/or modify\n\rit under the terms of the GNU General Public License as published by\n\rthe Free Software Foundation, either version 3 of the License, or\n\r(at your option) any later version.\n\r\n\rThis program is distributed in the hope that it will be useful,\n\rbut WITHOUT ANY WARRANTY; without even the implied warranty of\n\rMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\rGNU General Public License for more details.\n\r\n\rYou should have received a copy of the GNU General Public License\n\ralong with this program.  If not, see <https://www.gnu.org/licenses/>.\n\r\n\r";
 
 MSH_CMD_LIST msh_commands;
 
@@ -57,6 +81,10 @@ int write_ethphy(int argc, char **argv, DEV* console);
 
 int print_ethstats(int argc, char **argv, DEV* console);
 
+int print_code_lic(int argc, char **argv, DEV* console);
+
+int print_code_warranty(int argc, char **argv, DEV* console);
+
 void MshInitCommands(void)
 {   
     MshCommandRegister(test_command, test_fs);
@@ -71,6 +99,8 @@ void MshInitCommands(void)
     MshCommandRegister(ethwrite_command, write_ethphy);
     MshCommandRegister(ethstats_command, print_ethstats);
     MshCommandRegister(mjs_command, mjsexec);
+    MshCommandRegister(code_license_command, print_code_lic);
+    MshCommandRegister(code_warranty_command, print_code_warranty);
 }
 
 void vTaskmShell(unsigned int device_num)
@@ -78,7 +108,8 @@ void vTaskmShell(unsigned int device_num)
     
  TickType_t xLastWakeTime;
  char command[100];
- char banner[]="*** Welcome to EidOS ! ***\r\n";
+ char banner[]="\n\r\n\r*** Welcome to EidOS ! ***\n\r\n\r";
+ 
  char prompt='>';
  DEV* console;
  DEV_PARAM device_conf;
@@ -110,7 +141,9 @@ void vTaskmShell(unsigned int device_num)
  /*initialize command list for test purposes*/
  MshInitCommands();
  
- writearray(console, banner, MSH_MAX_ARRAY_SIZE, '\n');
+ writearray(console, banner, MSH_MAX_ARRAY_SIZE, '\0');
+ 
+ writearray(console, license_banner, MSH_MAX_ARRAY_SIZE, '\0');
  
  while(1)
  { 
@@ -428,4 +461,14 @@ int write_ethphy(int argc, char **argv, DEV* console)
 int print_ethstats(int argc, char **argv, DEV* console)
 {
     CheckRXframes();
+}
+
+int print_code_lic(int argc, char **argv, DEV* console)
+{
+    writearray(console, license_banner, MSH_MAX_ARRAY_SIZE, '\0');
+}
+
+int print_code_warranty(int argc, char **argv, DEV* console)
+{
+    writearray(console, warranty_banner, MSH_MAX_ARRAY_SIZE, '\0');
 }

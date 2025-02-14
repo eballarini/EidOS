@@ -1,3 +1,21 @@
+/*
+EidOS - a small RTOS for PIC microntrollers
+Copyright (C) 2022  Emanuele Ballarini
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -544,84 +562,6 @@ int __wrap_vsnprintf (char * str, size_t n, const char * format, va_list arg )
   
   return i;
 }
-/*
-typedef enum {PRINT_N_CHAR, PRINT_W_CHAR, PRINT_INT, PRINT_UINT, PRINT_UOCT, PRINT_N_HEX, PRINT_W_HEX, PRINT_FLOAT, PRINT_PTR, PRINT_PTR_TYPE, PRINT_N_STR, PRINT_W_STR}print_type;
-
-typedef struct{
-    print_type type;
-} print_format;
-
-unsigned int parse_format(const char * format, print_format * parsed_format, size_t offset, size_t size)
-{
-  unsigned int i;
-  
-  for(i=offset; format[i]!='\0'&&i<size; i++)
-  {
-      switch(format[i])
-      {
-          case 'c': parsed_format->type=PRINT_N_CHAR; return offset+i; break;
-          case 'C': parsed_format->type=PRINT_W_CHAR; break;
-          case 'd': parsed_format->type=PRINT_INT; break;
-          case 'i': parsed_format->type=PRINT_INT;break;
-          case 'o': parsed_format->type=PRINT_UOCT;break;
-          case 'u': parsed_format->type=PRINT_UINT;break;
-          case 'x': parsed_format->type=PRINT_N_HEX;break;
-          case 'X': parsed_format->type=PRINT_W_HEX;break;
-          case 'e': parsed_format->type=PRINT_FLOAT;break;
-          case 'E': parsed_format->type=PRINT_FLOAT;break;
-          case 'f': parsed_format->type=PRINT_FLOAT;break;
-          case 'F': parsed_format->type=PRINT_FLOAT;break;
-          case 'g': parsed_format->type=PRINT_FLOAT;break;
-          case 'G': parsed_format->type=PRINT_FLOAT;break;
-          case 'a': parsed_format->type=PRINT_FLOAT;break;
-          case 'A': parsed_format->type=PRINT_FLOAT;break;
-          case 'n': parsed_format->type=PRINT_PTR;break;
-          case 'p': parsed_format->type=PRINT_PTR_TYPE;break;
-          case 's': parsed_format->type=PRINT_N_STR;break;
-          case 'S': parsed_format->type=PRINT_W_STR;break;
-          default:
-            break;
-      }
-  }
-  return offset+size;
-}
-
-int __wrap_vsnprintf (char * str, size_t n, const char * format, va_list arg )
-{
-  unsigned int i=0;
-  print_format parsed_format;
-  
-  int p;
-
-  //TODO: placeholder implementation
-  for(i=0; format[i]!='\0'&&i<n&&str!=NULL; i++)
-  {
-      //to be implemented
-      if(format[i]=='%')
-      {
-         i=parse_format(format, &parsed_format, i+1, n-(i+1));
-         
-         
-         if(parsed_format.type==PRINT_INT)
-         p=va_arg(arg,int);
-         
-         
-      }
-          
-      else
-      str[i]=format[i];
-
-  }
-  
-  if(i==n&&str!=NULL)
-  { if (n=0)
-      str[0]='\0';
-    else
-      str[i-1]='\0';
-  }
-  
-  return i;
-}*/
 
 int __wrap_snprintf (char * str, size_t n, const char * format, ...)
 {

@@ -1,3 +1,21 @@
+/*
+EidOS - a small RTOS for PIC microntrollers
+Copyright (C) 2022  Emanuele Ballarini
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include <source/ff.h>
 #include <sys/hardwaredefs.h>
 #include <sdcard/sdcard.h>
@@ -19,6 +37,8 @@ void vTaskDriveHandler(void* pvParameters)
     xLastWakeTime = xTaskGetTickCount();
     vTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS( 2000 ) );
     
+    if(SD_CHECK_PRESENCE==1)
+    {
     res=f_mount(&root_fs,"",1);
     
     if(res!=FR_OK)
@@ -29,6 +49,9 @@ void vTaskDriveHandler(void* pvParameters)
        {
        write_log ("\r\nfs: file system mounted\0"); 
        }
+    }
+    else
+       write_log ("\r\nfs: sd card absent\0"); 
     
     vTaskDelete(NULL);
 }
